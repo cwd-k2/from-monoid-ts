@@ -6,16 +6,19 @@ function testArray() {
   const func = (x: number) => {
     const arr = [];
 
-    for (const a of f1(x)) {
-      for (const b of f2(a)) {
-        for (const c of f3(b)) {
+    const r1 = f1(x);
+    for (const a of r1) {
+      const r2 = f2(a);
+      for (const b of r2) {
+        const r3 = f3(b);
+        for (const c of r3) {
           arr.push(c);
         }
       }
     }
 
     return arr;
-  }
+  };
 
   console.log(func(1));
 }
