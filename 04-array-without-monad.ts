@@ -4,7 +4,7 @@ function testArray() {
   const f3 = (x: number) => [x - 3, x, x + 3];
 
   const func = (x: number) => {
-    const arr = [];
+    const arr: number[] = [];
 
     const r1 = f1(x);
     for (const a of r1) {
