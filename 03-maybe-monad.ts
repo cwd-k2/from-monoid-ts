@@ -50,8 +50,8 @@ function testMaybe() {
     add(1)(v))(eta))))
   );
 
-  console.log(compareMaybe(func(1), nothing()));
-  console.log(compareMaybe(func(2), just(0)));
+  console.log(func(1));
+  console.log(func(2));
 }
 
 testMaybe();

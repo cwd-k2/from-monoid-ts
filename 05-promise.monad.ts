@@ -1,28 +1,30 @@
-import type { Func, BiOp } from "./types.ts";
+import type { Func } from "./types.ts";
 
-type C = number;
-type T = Func<C, Promise<C>>;
-let eta: T;
-let mu: BiOp<T>;
+type T<A, B> = Func<A, Promise<B>>;
 
-eta = (x) => Promise.resolve(x);
-mu = (a) => (b) => (x) => a(x).then(b);
+// eta: T<A, A>
+const eta = <A>(x: A) => Promise.resolve<A>(x);
+
+// mu: T<A, B> -> T<B, C> -> T<A, C>
+// prettier-ignore
+const mu = <A, B, C>(a: T<A, B>) => (b: T<B, C>): T<A, C> =>
+  (x: A) => a(x).then(b);
 
 function testPromise() {
   console.log("Testing Promise.");
 
-  const f1: T = (x) => Promise.resolve(x + 1);
-  const f2: T = (x) => Promise.resolve(x + 2);
-  const f3: T = (x) => Promise.resolve(x * 3);
+  const splitString: T<string, string[]> = s => eta(s.split(" "));
+  const arrayLength: T<string[], number> = a => eta(a.length);
+  const toHexString: T<number, string> = n => eta(n.toString(16))
 
   // prettier-ignore
-  const func = mu(x =>
-        f1(x))(mu(y =>
-        f2(y))(mu(z =>
-        f3(z))(eta)));
+  const func =      mu((s: string)   =>
+    splitString(s))(mu((a: string[]) =>
+    arrayLength(a))(mu((n: number)   =>
+    toHexString(n))(eta)));
 
-  // prettier-ignore
-  func(0).then((v) => console.log(v));
+  const alphabets = "a b c d e f g h i j k l m n o p q r s t u v w x y z";
+  func(alphabets).then((v) => console.log(v));
 }
 
 testPromise();
