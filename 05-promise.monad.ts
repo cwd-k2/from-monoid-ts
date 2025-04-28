@@ -13,12 +13,12 @@ const mu = <A, B, C>(a: T<A, B>) => (b: T<B, C>): T<A, C> =>
 function testPromise() {
   console.log("Testing Promise.");
 
-  const splitString: T<string, string[]> = s => eta(s.split(" "));
-  const arrayLength: T<string[], number> = a => eta(a.length);
-  const toHexString: T<number, string> = n => eta(n.toString(16))
+  const splitString: T<string, string[]> = (s) => eta(s.split(" "));
+  const arrayLength: T<string[], number> = (a) => eta(a.length);
+  const toHexString: T<number, string> = (n) => eta(n.toString(16));
 
   // prettier-ignore
-  const func =      mu((s: string)   =>
+  const func      = mu((s: string)   =>
     splitString(s))(mu((a: string[]) =>
     arrayLength(a))(mu((n: number)   =>
     toHexString(n))(eta)));
